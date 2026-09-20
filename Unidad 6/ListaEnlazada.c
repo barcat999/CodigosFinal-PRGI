@@ -37,6 +37,8 @@ void listar(){
 
     }
 
+    printf("NULL\n");
+
 }
 
 void buscar(){
@@ -73,7 +75,7 @@ void modificar(){
     printf("Numero a modificar:");
     scanf("%d" , &valorBuscar);
 
-    while(aux != valorBuscar){
+    while(aux != NULL){
 
         if(aux->dato == valorBuscar){
 
