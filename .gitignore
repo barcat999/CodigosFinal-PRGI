@@ -1,0 +1,11 @@
+# Visual Studio Code
+.vscode/
+
+# Archivos ejecutables
+*.exe
+
+# Archivos de objetos
+*.o
+
+# Archivos temporales
+*.tmp
