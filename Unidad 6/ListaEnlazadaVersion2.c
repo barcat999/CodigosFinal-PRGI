@@ -23,6 +23,7 @@ void alta(Nodo **cabeza){
 
     } 
     else printf("Error: memoria insuficiente\n");
+    
 }
 
 void baja(Nodo **cabeza){

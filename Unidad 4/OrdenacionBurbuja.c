@@ -17,7 +17,6 @@ int main(){
 
         for(int j = 0 ; j < 5 - 1 - i ; j++){
 
-
             if(array[j] > array[j + 1]){
 
                 temp = array[j];

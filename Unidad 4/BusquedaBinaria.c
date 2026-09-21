@@ -13,7 +13,7 @@ int main(){
 
         if(array[medio] == buscado){
 
-            printf("El numero %d fue encontrado en la posicion [%d]" , buscado , medio);
+            printf("El numero %d fue encontrado en la posicion [%d]\n" , buscado , medio);
             encontrado = 1;
             break;
 
@@ -23,6 +23,8 @@ int main(){
         else inicio = medio + 1;
 
     }
+
+    if(!encontrado) printf("El numero %d no se encuentra en el array\n" , buscado);
 
     return 0;
 
