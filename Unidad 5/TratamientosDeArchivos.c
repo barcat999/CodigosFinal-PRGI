@@ -1,22 +1,22 @@
 #include <stdio.h>
 
-struct Registro{
+typedef struct Registro{
 
     int clave;
     char nombre[50];
     int activo;
 
-};
+} Registro;
 
 void alta(){
 
     FILE *archivo = fopen("archivo.dat" , "ab");
     if(archivo == NULL) return;
 
-    struct Registro nuevo;
+    Registro nuevo;
 
     printf("Ingrese clave: ");
-    scanf("%d " , &nuevo.clave);
+    scanf("%d" , &nuevo.clave);
 
     /*
     printf("Ingrese nombre: ");
@@ -24,9 +24,12 @@ void alta(){
     gets(nuevo.nombre);
     */
 
+    printf("Ingrese nombre: ");
+    scanf(" %[^\n]" , nuevo.nombre); 
+
     nuevo.activo = 1;
 
-    fwrite(&nuevo , sizeof(struct Registro) , 1 , archivo);
+    fwrite(&nuevo , sizeof(Registro) , 1 , archivo);
 
     fclose(archivo);
     printf("Alta exitosa\n");
@@ -35,26 +38,38 @@ void alta(){
 
 void modificar(){
 
-    FILE *archivo = fopen("archivo.dat" , "ab");
+    FILE *archivo = fopen("archivo.dat" , "rb+");
 
-    struct Registro reg;
+    if(archivo == NULL){
+    
+        printf("El archivo no existe\n");
+        return;
+    
+    }
+
+    Registro reg;
     int encontrado = 0 , claveBuscado;
 
     printf("Ingrese clave a modificar: ");
-    scanf("%d " , &reg.clave);
+    scanf("%d" , &claveBuscado);
 
-    while(fread(&reg , sizeof(struct Registro) , 1 , archivo) == 1){
+    while(fread(&reg , sizeof(Registro) , 1 , archivo) == 1){
 
         if(reg.clave == claveBuscado && reg.activo == 1){
 
             printf("Nombre actual: %s\n" , reg.nombre);
 
+            /*
             printf("Ingrese el nuevo nombre: ");
             fflush(stdin);
             gets(reg.nombre);
+            */
+            
+            printf("Ingrese el nuevo nombre: ");
+            scanf(" %[^\n]" , reg.nombre);
 
-            fseek(archivo , -(long)sizeof(struct Registro) , SEEK_CUR);
-            fwrite(&reg , sizeof(struct Registro) , 1 , archivo);
+            fseek(archivo , -(long)sizeof(Registro) , SEEK_CUR);
+            fwrite(&reg , sizeof(Registro) , 1 , archivo);
 
             encontrado = 1;
             printf("Modificada con exito\n");
@@ -65,28 +80,30 @@ void modificar(){
     }
 
     fclose(archivo);
-    if(encontrado == 0) printf("Clave no encontrada o dada de baja\n");
+    if(!encontrado) printf("Clave no encontrada o dada de baja\n");
 
 }
 
 void bajaLogica(){
 
-    FILE *archivo = fopen("archivo.dat" , "ab");
+    FILE *archivo = fopen("archivo.dat" , "rb+");
     if(archivo == NULL) return;
 
-    struct Registro reg;
+    Registro reg;
     int encontrado = 0 , claveBuscado;
 
     printf("Ingrese legajo a borrar: ");
-    scanf("%d", &claveBuscado);
+    scanf("%d" , &claveBuscado);
 
-    while(fread(&reg , sizeof(struct Registro) , 1 , archivo) == 1){
+    while(fread(&reg , sizeof(Registro) , 1 , archivo) == 1){
 
         if(reg.clave == claveBuscado && reg.activo == 1){
 
-            reg.activo = 0;
-            fseek(archivo , -(long)sizeof(struct Registro) , SEEK_CUR);
-            fwrite(&reg , sizeof(struct Registro) , 1 , archivo);
+            reg.activo = 0;     //      apagamos la bandera
+            
+            fseek(archivo , -(long)sizeof(Registro) , SEEK_CUR);
+            fwrite(&reg , sizeof(Registro) , 1 , archivo);
+    
             encontrado = 1;
             printf("Baja logica empleada con exito\n");
             break;
@@ -96,7 +113,7 @@ void bajaLogica(){
     }
 
     fclose(archivo);
-    if(encontrado == 0) printf("Clave no encontrada\n");
+    if(!encontrado) printf("Clave no encontrada\n");
 
 }
 
@@ -105,12 +122,12 @@ void bajaFisica(){
     FILE *og = fopen("archivo.dat" , "rb") , *temp = fopen("temporal.dat" , "wb");
     if(og == NULL || temp == NULL) return;
 
-    struct Registro reg;
+    Registro reg;
     int encontrado = 0;
 
-    while(fread(&reg , sizeof(struct Registro) , 1 , og) == 1){
+    while(fread(&reg , sizeof(Registro) , 1 , og) == 1){
 
-        if(reg.activo == 1) fwrite(&reg , sizeof(struct Registro) , 1 , temp);
+        if(reg.activo == 1) fwrite(&reg , sizeof(Registro) , 1 , temp);
         else encontrado = 1;
 
     }
@@ -128,7 +145,7 @@ void bajaFisica(){
     else{
 
         remove("temporal.dat");
-        printf("No habia regsitros dado de baja para limpiar\n");
+        printf("No habia registros dado de baja para limpiar\n");
 
     }
 

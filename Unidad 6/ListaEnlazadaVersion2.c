@@ -61,10 +61,7 @@ void baja(Nodo **cabeza){
         actual = actual->sig;
 
     }
-
-    if(encontrado) printf("Nodo eliminado\n");
-    else printf("Valor no encontrado\n");
-    
+            
 }
 
 void listar(Nodo *cabeza){

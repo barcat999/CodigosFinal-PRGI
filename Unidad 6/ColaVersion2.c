@@ -36,6 +36,7 @@ void encolar(Nodo **frente , Nodo **final , int nuevoDato){
             *final = nuevo;
 
         }
+        
     } 
     else printf("Error: memoria insuficiente\n");
 
